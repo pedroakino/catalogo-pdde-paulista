@@ -1,0 +1,585 @@
+:root {
+  --bg: #f4f6f9;
+  --surface: #ffffff;
+  --surface-soft: #f8fafc;
+  --text: #12243b;
+  --muted: #6f7e93;
+  --line: #e1e7ee;
+  --line-strong: #cad6e2;
+  --primary: #155f94;
+  --primary-dark: #104e7c;
+  --primary-soft: #edf3ff;
+  --shadow: 0 2px 8px rgba(27, 50, 69, 0.06);
+  --radius-lg: 8px;
+  --radius-md: 8px;
+  --radius-sm: 6px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid rgba(18, 99, 234, 0.28);
+  outline-offset: 2px;
+}
+
+/* Cabeçalho institucional inspirado no PGA-UREVTP 2.0 */
+.hero {
+  position: relative;
+  overflow: visible;
+  background: #fff;
+  color: var(--text);
+  border-bottom: 1px solid var(--line);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 4px;
+  opacity: 1;
+  background: linear-gradient(
+    90deg,
+    #c6252d 0 20%,
+    #ef7b00 20% 40%,
+    #f4c437 40% 58%,
+    #4b9d35 58% 79%,
+    #008ea1 79% 100%
+  );
+  pointer-events: none;
+  mask-image: none;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  width: min(1440px, calc(100% - 68px));
+  margin: 0 auto;
+  padding: 18px 0 24px;
+  display: grid;
+  grid-template-columns: minmax(260px, 0.85fr) minmax(320px, 1.15fr);
+  grid-template-areas:
+    "brand copy"
+    "search search";
+  align-items: center;
+  gap: 16px 30px;
+}
+
+.brand {
+  grid-area: brand;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.brand-mark {
+  width: 58px;
+  height: 58px;
+  flex: 0 0 auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  background-image: url("https://raw.githubusercontent.com/pedroakino/pga-urevtp-2.0/main/public/ure-votuporanga-logo.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.brand-mark span {
+  display: none;
+}
+
+.eyebrow {
+  margin: 0 0 5px;
+  color: #1263ea;
+  font-size: 0.66rem;
+  line-height: 1.2;
+  font-weight: 850;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.brand h1 {
+  margin: 0;
+  color: #12243b;
+  font-size: clamp(1.35rem, 2.3vw, 1.85rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+.brand > div::after {
+  content: "URE Votuporanga · Serviço de Administração e Finanças - SEAFIN";
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 0.69rem;
+  line-height: 1.35;
+}
+
+.hero-copy {
+  grid-area: copy;
+  max-width: 760px;
+  margin: 0;
+  justify-self: end;
+}
+
+.hero-copy > p {
+  margin: 0;
+  color: #586b80;
+  font-size: 0.83rem;
+  line-height: 1.55;
+}
+
+.meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.meta-row span {
+  padding: 5px 8px;
+  border: 1px solid #dce3ec;
+  border-radius: 5px;
+  background: #f8fafc;
+  color: #60748a;
+  font-size: 0.68rem;
+  font-weight: 750;
+}
+
+.search-box {
+  grid-area: search;
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 2px;
+  border: 1px solid #cfd9e5;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: none;
+}
+
+.search-box:focus-within {
+  border-color: #7aa7dd;
+  box-shadow: 0 0 0 3px rgba(18, 99, 234, 0.08);
+}
+
+.search-box > svg {
+  width: 18px;
+  height: 18px;
+  margin-left: 13px;
+  color: #55708d;
+}
+
+.search-box input {
+  padding: 12px 12px;
+  color: var(--text);
+  font-size: 0.82rem;
+}
+
+.search-box input::placeholder {
+  color: #95a4b5;
+}
+
+.search-box button {
+  width: 34px;
+  height: 34px;
+  margin-right: 5px;
+  border-radius: 6px;
+  color: #61768a;
+}
+
+.search-box button:hover {
+  background: #f4f7fa;
+}
+
+/* Conteúdo e painéis */
+.workspace {
+  width: min(1440px, calc(100% - 68px));
+  margin: 0 auto;
+  padding: 32px 0 48px;
+}
+
+.section-heading,
+.results-heading {
+  align-items: end;
+}
+
+.section-kicker {
+  color: #1263ea;
+  font-size: 0.66rem;
+  font-weight: 850;
+  letter-spacing: 0.13em;
+}
+
+.section-heading h2,
+.results-heading h2 {
+  color: #12243b;
+  letter-spacing: 0;
+}
+
+.section-heading h2 {
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+}
+
+.results-heading h2 {
+  font-size: 1rem;
+}
+
+.results-heading p {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.text-button {
+  color: #155f94;
+  font-size: 0.78rem;
+}
+
+.axis-grid {
+  gap: 10px;
+}
+
+.axis-card {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  transition: background 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.axis-card:hover {
+  transform: none;
+  border-color: #cbd7e3;
+  background: #fbfdff;
+  box-shadow: 0 3px 10px rgba(27, 50, 69, 0.08);
+}
+
+.axis-card.active {
+  border-color: color-mix(in srgb, var(--axis) 42%, #dce3ec);
+  background: color-mix(in srgb, var(--axis) 4%, white);
+  box-shadow: inset 3px 0 var(--axis), var(--shadow);
+}
+
+.axis-card::after {
+  display: none;
+}
+
+.axis-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 7px;
+  font-size: 0.92rem;
+}
+
+.axis-info strong {
+  color: #1b334d;
+  font-size: 0.82rem;
+}
+
+.axis-info small {
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+
+.filter-panel {
+  margin-top: 20px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.filter-title {
+  color: #42566d;
+  font-size: 0.78rem;
+}
+
+.filter-title svg {
+  color: #155f94;
+}
+
+.filter-grid label > span {
+  color: #667991;
+  font-size: 0.66rem;
+  letter-spacing: 0.07em;
+}
+
+.select-wrap select {
+  height: 38px;
+  border: 1px solid #cfd9e5;
+  border-radius: 5px;
+  background: #fff;
+  color: #24394f;
+  font-size: 0.78rem;
+}
+
+.select-wrap select:hover {
+  border-color: #afbfce;
+}
+
+.results-section {
+  margin-top: 24px;
+}
+
+.page-indicator {
+  color: #7a899a;
+  font-size: 0.72rem;
+}
+
+.catalog-table {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.catalog-head {
+  min-height: 44px;
+  background: #f8fafc;
+  color: #10243b;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.catalog-row {
+  min-height: 58px;
+}
+
+.catalog-row:hover {
+  background: #f8fbff;
+}
+
+.catalog-cell {
+  color: #334d67;
+  font-size: 0.79rem;
+}
+
+.item-cell {
+  color: #152e48;
+  font-weight: 700;
+}
+
+.status-badge {
+  min-height: 22px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 0.66rem;
+}
+
+.natureza-text {
+  color: #53677d;
+  font-size: 0.74rem;
+}
+
+.secondary-button,
+.copy-button {
+  min-height: 36px;
+  padding: 7px 12px;
+  border-color: #cad6e2;
+  border-radius: 6px;
+  color: #3f5268;
+  font-size: 0.76rem;
+}
+
+.secondary-button:hover:not(:disabled),
+.copy-button:hover {
+  background: #f4f7fa;
+  border-color: #b5c4d2;
+}
+
+.pagination-pages button {
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  font-size: 0.76rem;
+}
+
+.pagination-pages button.active {
+  background: #155f94;
+}
+
+.site-footer {
+  width: min(1440px, calc(100% - 68px));
+  color: #75869a;
+  font-size: 0.7rem;
+}
+
+.site-footer strong {
+  color: #52687e;
+}
+
+/* Modal no padrão de painéis do PGA */
+.modal-backdrop {
+  background: rgba(7, 27, 49, 0.55);
+  backdrop-filter: blur(3px);
+}
+
+.modal {
+  border: 1px solid #d8e1ea;
+  border-radius: 10px;
+  box-shadow: 0 22px 60px rgba(7, 27, 49, 0.26);
+}
+
+.modal-topbar {
+  padding: 14px 18px 0;
+}
+
+.icon-button {
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  background: #f4f7fa;
+  color: #55708d;
+}
+
+.modal-heading {
+  padding: 20px 24px;
+}
+
+.modal-heading h2 {
+  color: #12243b;
+  font-size: clamp(1.25rem, 2.7vw, 1.72rem);
+  letter-spacing: -0.015em;
+}
+
+.modal-content {
+  padding: 22px 24px 24px;
+}
+
+.detail-card,
+.detail-section {
+  border-radius: 8px;
+  background: #fbfcfe;
+}
+
+.detail-label {
+  color: #667991;
+  font-size: 0.66rem;
+}
+
+.detail-text {
+  color: #2b4157;
+  font-size: 0.86rem;
+}
+
+.chip {
+  border-radius: 5px;
+  font-size: 0.69rem;
+}
+
+.chip-primary {
+  border-color: #d8e5fa;
+  background: #edf3ff;
+  color: #245b9c;
+}
+
+.requirement-grid > div {
+  border-radius: 6px;
+}
+
+.warning-box {
+  border-radius: 8px;
+}
+
+.modal-footer {
+  background: #f8fafc;
+}
+
+.loading-card {
+  border-radius: 8px;
+}
+
+.loader {
+  border-top-color: #155f94;
+}
+
+@media (max-width: 900px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "brand"
+      "copy"
+      "search";
+    gap: 12px;
+  }
+
+  .hero-copy {
+    justify-self: stretch;
+    max-width: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .hero-inner,
+  .workspace,
+  .site-footer {
+    width: min(100% - 24px, 1440px);
+  }
+
+  .hero-inner {
+    padding: 15px 0 20px;
+  }
+
+  .brand-mark {
+    width: 48px;
+    height: 48px;
+  }
+
+  .brand h1 {
+    font-size: 1.28rem;
+  }
+
+  .brand > div::after {
+    font-size: 0.62rem;
+  }
+
+  .hero-copy {
+    margin-top: 0;
+  }
+
+  .meta-row span {
+    font-size: 0.64rem;
+  }
+
+  .search-box {
+    min-height: 42px;
+    margin-top: 0;
+    border-radius: 6px;
+  }
+
+  .search-box input {
+    padding: 11px 10px;
+    font-size: 0.8rem;
+  }
+
+  .workspace {
+    padding-top: 26px;
+  }
+
+  .axis-card,
+  .filter-panel,
+  .catalog-row,
+  .modal {
+    border-radius: 8px;
+  }
+
+  .modal {
+    border-radius: 12px 12px 0 0;
+  }
+}
