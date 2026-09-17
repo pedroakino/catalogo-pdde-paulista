@@ -38,4 +38,4 @@ npm start
 
 ## Publicação
 
-O projeto foi preparado para publicação na Vercel por integração com o repositório GitHub.
+O projeto está integrado ao GitHub e à Vercel. Alterações enviadas para a branch `main` disparam a publicação de produção automaticamente.
