@@ -14,9 +14,7 @@ Aplicação web para consulta do **Catálogo de Itens do PDDE Paulista**, organi
 
 ## Base de dados
 
-A versão inicial usa um arquivo estático compactado em:
-
-`public/data/catalogo.json.gz`
+A base foi convertida para JSON, compactada e armazenada em partes textuais dentro de `public/data/`. O navegador recompõe e descompacta os dados ao abrir o catálogo, sem necessidade de banco de dados nesta versão.
 
 A planilha de origem possui **1.286 linhas de dados**. Como cinco linhas trazem simultaneamente um item permitido e outro não permitido, a aplicação apresenta **1.291 itens individualizados**.
 
