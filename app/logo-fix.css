@@ -1,15 +1,39 @@
 .brand-mark {
-  width: 64px;
-  height: 64px;
+  width: 72px;
+  height: 72px;
+  min-width: 72px;
+  min-height: 72px;
+  flex: 0 0 72px;
+  display: block !important;
+  position: relative;
+  overflow: visible;
+  padding: 0 !important;
+  border: 0 !important;
+  background-color: transparent !important;
   background-image: url("/ure-votuporanga-logo.png") !important;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: contain !important;
+  box-shadow: none !important;
+}
+
+/* O tema do PGA adiciona o subtítulo em todo div filho da marca.
+   Na logo isso acabava sendo desenhado sobre a metade inferior da imagem. */
+.brand-mark::after {
+  content: none !important;
+  display: none !important;
+}
+
+.brand-mark span {
+  display: none !important;
 }
 
 @media (max-width: 680px) {
   .brand-mark {
-    width: 52px;
-    height: 52px;
+    width: 58px;
+    height: 58px;
+    min-width: 58px;
+    min-height: 58px;
+    flex-basis: 58px;
   }
 }
