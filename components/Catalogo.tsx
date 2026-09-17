@@ -29,6 +29,10 @@ type CatalogoPayload = {
   itens: ItemCatalogo[];
 };
 
+type CatalogoManifest = {
+  parts: string[];
+};
+
 const ITENS_POR_PAGINA = 50;
 
 const eixoClasses: Record<string, string> = {
@@ -255,16 +259,37 @@ export default function Catalogo() {
   useEffect(() => {
     async function loadCatalogo() {
       try {
-        const response = await fetch("/data/catalogo.json.gz");
-        if (!response.ok || !response.body) throw new Error("Falha ao carregar catálogo");
         if (typeof DecompressionStream === "undefined") {
           throw new Error("O navegador não oferece suporte à descompressão do catálogo.");
         }
 
-        const decompressed = response.body.pipeThrough(new DecompressionStream("gzip"));
+        const manifestResponse = await fetch("/data/catalogo.parts.json");
+        if (!manifestResponse.ok) throw new Error("Falha ao carregar manifesto do catálogo");
+        const manifest = (await manifestResponse.json()) as CatalogoManifest;
+        if (!Array.isArray(manifest.parts) || manifest.parts.length === 0) {
+          throw new Error("Manifesto do catálogo inválido");
+        }
+
+        const partResponses = await Promise.all(manifest.parts.map((part) => fetch(part)));
+        if (partResponses.some((response) => !response.ok)) {
+          throw new Error("Falha ao carregar uma parte do catálogo");
+        }
+
+        const encodedParts = await Promise.all(partResponses.map((response) => response.text()));
+        const encoded = encodedParts.join("").replace(/\s+/g, "");
+        const binary = atob(encoded);
+        const compressed = new Uint8Array(binary.length);
+        for (let index = 0; index < binary.length; index += 1) {
+          compressed[index] = binary.charCodeAt(index);
+        }
+
+        const decompressed = new Blob([compressed])
+          .stream()
+          .pipeThrough(new DecompressionStream("gzip"));
         const payload = (await new Response(decompressed).json()) as CatalogoPayload;
         setData(payload);
-      } catch {
+      } catch (error) {
+        console.error(error);
         setLoadingError(true);
       }
     }
