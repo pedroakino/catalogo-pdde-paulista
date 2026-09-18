@@ -10,15 +10,14 @@
   padding: 0 !important;
   border: 0 !important;
   background-color: transparent !important;
-  background-image: url("/ure-votuporanga-logo.png") !important;
+  background-image: url("https://portal-ure-votuporanga.vercel.app/ure-votuporanga-logo.png") !important;
   background-repeat: no-repeat !important;
   background-position: center !important;
   background-size: contain !important;
   box-shadow: none !important;
 }
 
-/* O tema do PGA adiciona o subtítulo em todo div filho da marca.
-   Na logo isso acabava sendo desenhado sobre a metade inferior da imagem. */
+.brand-mark::before,
 .brand-mark::after {
   content: none !important;
   display: none !important;
