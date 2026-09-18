@@ -16,6 +16,8 @@ type ItemCatalogo = {
   manifestacaoPrevia: string | null;
   beneficiarios: string[];
   linhaOrigem: number;
+  vigenciaInicio?: string | null;
+  vigenciaFim?: string | null;
 };
 
 type CatalogoPayload = {
@@ -34,6 +36,26 @@ type CatalogoManifest = {
 };
 
 const ITENS_POR_PAGINA = 50;
+const VIGENCIA_PADRAO_INICIO = "17/07/2026";
+const VIGENCIA_PADRAO_FIM: string | null = null;
+
+const DOCUMENTOS_REFERENCIA = [
+  {
+    titulo: "Resolução Unificada do PDDE Paulista",
+    subtitulo: "Resolução SEDUC nº 77/2026",
+    url: "https://drive.google.com/file/d/17fJ3a-pblOdAwjTywVnRhGCwplvXlsx7/view?usp=sharing",
+  },
+  {
+    titulo: "Guia de Execução dos Recursos",
+    subtitulo: "PDDE Paulista",
+    url: "https://drive.google.com/file/d/1rU9taM7LKwvvYtivUwcWEOBczqIdmGEj/view?usp=sharing",
+  },
+  {
+    titulo: "Anexos Temáticos",
+    subtitulo: "Substituídos após a Resolução Unificada",
+    url: "https://drive.google.com/file/d/1lcoQnXOGXUAJOjrRB1gryrMxLde8zarm/view?usp=sharing",
+  },
+];
 
 const eixoClasses: Record<string, string> = {
   "Pedagógico": "eixo-pedagogico",
@@ -93,6 +115,23 @@ function CopyIcon() {
   );
 }
 
+function ExternalLinkIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M14 5h5v5M19 5l-8 8" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M18 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function requirementClass(value: string | null) {
+  const normalized = normalize(value);
+  if (!normalized) return "requirement-unknown";
+  if (normalized.startsWith("sim")) return "requirement-yes";
+  if (normalized.startsWith("nao")) return "requirement-no";
+  return "requirement-neutral";
+}
+
 function ItemModal({
   item,
   onClose,
@@ -121,6 +160,8 @@ function ItemModal({
   }
 
   const hasRequirements = item.artRrt || item.manifestacaoPrevia;
+  const vigenciaInicio = item.vigenciaInicio ?? VIGENCIA_PADRAO_INICIO;
+  const vigenciaFim = item.vigenciaFim ?? VIGENCIA_PADRAO_FIM;
 
   return (
     <div className="modal-backdrop" role="presentation" onMouseDown={onClose}>
@@ -158,7 +199,7 @@ function ItemModal({
 
         <div className="modal-content">
           {item.status === "Permitido" && (
-            <div className="detail-grid">
+            <div className="detail-grid detail-grid-three">
               <section className="detail-card">
                 <p className="detail-label">Natureza da despesa</p>
                 <div className="chip-list">
@@ -174,6 +215,14 @@ function ItemModal({
                   {item.fontes.length ? item.fontes.map((value) => (
                     <span className="chip" key={value}>{value}</span>
                   )) : <span className="muted">Não indicada</span>}
+                </div>
+              </section>
+
+              <section className="detail-card">
+                <p className="detail-label">Vigência do item</p>
+                <div className="vigencia-card">
+                  <strong>Desde {vigenciaInicio}</strong>
+                  <span>{vigenciaFim ? `Até ${vigenciaFim}` : "Sem data de término"}</span>
                 </div>
               </section>
             </div>
@@ -203,7 +252,7 @@ function ItemModal({
                     <strong>{item.artRrt ?? "Não informado"}</strong>
                   </div>
                   <div>
-                    <span>Manifestação prévia da área</span>
+                    <span>Manifestação prévia FDE/área técnica</span>
                     <strong>{item.manifestacaoPrevia ?? "Não informado"}</strong>
                   </div>
                 </div>
@@ -406,6 +455,23 @@ export default function Catalogo() {
                 <span>{eixos.length} eixos</span>
                 <span>Atualizado em {data.meta.atualizadoEm}</span>
               </div>
+              <nav className="reference-links" aria-label="Documentos de referência do PDDE Paulista">
+                {DOCUMENTOS_REFERENCIA.map((documento) => (
+                  <a
+                    key={documento.titulo}
+                    href={documento.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="reference-link"
+                  >
+                    <span>
+                      <strong>{documento.titulo}</strong>
+                      <small>{documento.subtitulo}</small>
+                    </span>
+                    <ExternalLinkIcon />
+                  </a>
+                ))}
+              </nav>
             </div>
 
             <div className="search-box">
@@ -537,6 +603,8 @@ export default function Catalogo() {
                   <span>Item</span>
                   <span>Situação</span>
                   <span>Natureza</span>
+                  <span>ART/RRT</span>
+                  <span>Manifestação prévia</span>
                 </div>
                 <div className="catalog-body">
                   {pageItems.map((item) => (
@@ -560,6 +628,20 @@ export default function Catalogo() {
                       <span className="catalog-cell" data-label="Natureza">
                         {item.status === "Permitido" && item.naturezas.length ? (
                           <span className="natureza-text">{item.naturezas.join(" + ")}</span>
+                        ) : <span className="muted">—</span>}
+                      </span>
+                      <span className="catalog-cell quick-requirement-cell" data-label="ART/RRT">
+                        {item.status === "Permitido" ? (
+                          <span className={`requirement-badge ${requirementClass(item.artRrt)}`}>
+                            {item.artRrt ?? "—"}
+                          </span>
+                        ) : <span className="muted">—</span>}
+                      </span>
+                      <span className="catalog-cell quick-requirement-cell" data-label="Manifestação prévia">
+                        {item.status === "Permitido" ? (
+                          <span className={`requirement-badge ${requirementClass(item.manifestacaoPrevia)}`}>
+                            {item.manifestacaoPrevia ?? "—"}
+                          </span>
                         ) : <span className="muted">—</span>}
                       </span>
                     </button>
