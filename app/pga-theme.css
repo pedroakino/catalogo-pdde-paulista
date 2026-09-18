@@ -156,6 +156,65 @@ select:focus-visible {
   font-weight: 750;
 }
 
+.reference-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+  margin-top: 11px;
+}
+
+.reference-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+  padding: 8px 9px;
+  border: 1px solid #dbe4ed;
+  border-radius: 6px;
+  background: #fbfcfe;
+  color: #244562;
+  text-decoration: none;
+  transition: border-color 120ms ease, background 120ms ease;
+}
+
+.reference-link:hover {
+  border-color: #aebfd0;
+  background: #f4f8fc;
+}
+
+.reference-link > span {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.reference-link strong {
+  overflow: hidden;
+  color: #244562;
+  font-size: 0.68rem;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reference-link small {
+  overflow: hidden;
+  color: #718397;
+  font-size: 0.59rem;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reference-link svg {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  color: #155f94;
+}
+
 .search-box {
   grid-area: search;
   position: relative;
@@ -468,6 +527,10 @@ select:focus-visible {
   background: #fbfcfe;
 }
 
+.detail-grid-three {
+  grid-template-columns: 1fr 1.35fr 1fr;
+}
+
 .detail-label {
   color: #667991;
   font-size: 0.66rem;
@@ -523,6 +586,10 @@ select:focus-visible {
     justify-self: stretch;
     max-width: none;
   }
+
+  .detail-grid-three {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media (max-width: 680px) {
@@ -555,6 +622,24 @@ select:focus-visible {
 
   .meta-row span {
     font-size: 0.64rem;
+  }
+
+  .reference-links {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .reference-link {
+    padding: 8px 9px;
+  }
+
+  .reference-link strong,
+  .reference-link small {
+    white-space: normal;
+  }
+
+  .detail-grid-three {
+    grid-template-columns: 1fr;
   }
 
   .search-box {
